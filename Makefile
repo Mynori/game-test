@@ -7,7 +7,7 @@ NAME = game.gb
 %.obj: %.z80
 	$(COMPILE) -o$@ $<
 
-SOURCES = src/game.z80
+SOURCES =	src/init.z80	
 
 OBJECTS = $(SOURCES:.z80=.obj)
 

@@ -1,4 +1,7 @@
-SECTION "rom", ROM0
+; include "gameboy.z80"
+; include "memory.z80"
+
+SECTION "rom", rom0
 
 ; $0000 - $003F: RST handlers.
 ret
