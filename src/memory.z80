@@ -1,6 +1,3 @@
-SECTION "memory", rom0
-
-global memset, memcpy
 ; Fills a range in memory with a specified byte value.
 ; hl = destination address
 ; bc = byte count
@@ -35,4 +32,4 @@ memcpy:
     jr nz, .repeat
     dec b
     jr nz, .repeat
-ret
+ret 
