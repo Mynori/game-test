@@ -1,4 +1,2 @@
-*.obj
-*.map
-*.sym
-*.gb
+bin
+obj
