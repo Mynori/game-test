@@ -3,16 +3,74 @@ include "src/gameboy.z80"
 SECTION "rom", rom0
 include "src/boot.z80"
 include "src/memory.z80"
+include "src/gfx.z80"
+
+vblank:
+    ; Jumping here clears vblank flag automatically
+    push hl
+    ld hl, GB_SCROLL_X
+    ; dec [hl]
+    ld hl, GB_SCROLL_Y
+    ; dec [hl]
+    pop hl
+    reti
 
 ; $0150: Code!
 main:
+    ; Set interrupts
+    xor a
+    ld [GB_INTERRUPT_FLAG], a
+    ld a, GB_INTERRUPT_VBLANK
+    ld [GB_INTERRUPT_ENABLE], a
+
+    ; Set stack to top of HiRAM
+    ld sp, $FFFE
+
+    di ; Interrupts need to be off for waiting to work
+    call DisableLCD
+
+    ; Set palette
+    ld a, %11100100
+    ld [GB_PALETTE_BG], a
+    ld [GB_PALETTE_OBJ1], a
+    ld [GB_PALETTE_OBJ2], a
+
+    ; Set scroll position
+    xor a
+    ld [GB_SCROLL_X], a
+    ld [GB_SCROLL_Y], a
+
+    ; Clear VRAM
+    ld hl, $8000
+    ld bc, $9FFF - $8000
+    ld a, $FF
+    call memset
+
+    ld hl, $FE00
+    ld bc, $FE9F - $FE00
+    xor a
+    call memset
+
+    ; Load graphics
+    ld hl, .testgfxmap
+    ld de, $9000
+    ld bc, 704
+    call memcpy
+
+    ld hl, .testgfxmap
+    ld de, GB_RAM_MAP
+    ld bc, 128
+    call memcpy
+
+    ; Init display
+    call InitDisplay
+    ei
+
 .loop:
     halt
     jr .loop
 
-draw:
-stat:
-timer:
-serial:
-joypad:
-    reti
+.testgfxmap:
+    DB $C, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+
+
