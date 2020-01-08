@@ -1,3 +1,9 @@
 bin
 obj
+*.gb
+*.sav
+*.obj
+*.map
+*.sym
+gfx/*.bin
 TODO
