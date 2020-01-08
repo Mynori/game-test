@@ -51,7 +51,7 @@ all: $(GFX) $(OBJECTS) $(MAPS) $(SYMBOLS) $(BINARY)
 build: $(GFX) $(OBJECTS) $(BINARY)
 
 clean:
-	rm -rf $(GFX) $(OBJECTS) $(MAPS) $(SYMBOLS) $(OBJDIR)
+	rm -rf $(GFX) $(OBJECTS) $(MAPS) $(SYMBOLS) $(GFXDIROBJ) $(OBJDIR)
 
 fclean:	clean
 	rm -rf $(BINARY) $(BUILDDIR)
