@@ -1,0 +1,95 @@
+; $0000 - $003F: RST handlers.
+SECTION "rst00", rom0[$0]
+    ret
+
+SECTION "rst08", rom0[$8]
+    ret
+
+SECTION "rst10", rom0[$10]
+    ret
+
+SECTION "rst18", rom0[$18]
+    ret
+
+SECTION "rst20", rom0[$20]
+    ret
+
+SECTION "rst28", rom0[$28]
+    ret
+
+SECTION "rst30", rom0[$30]
+    ret
+
+SECTION "rst38", rom0[$38]
+    ret
+
+; $0040 - $0067: Interrupt handlers.
+SECTION "vblank", rom0[$40]
+    jp vblank
+
+SECTION "stat", rom0[$48]
+    reti
+
+SECTION "timer", rom0[$50]
+    reti
+
+SECTION "serial", rom0[$58]
+    reti
+
+SECTION "joypad", rom0[$60]
+    reti
+
+; $0068 - $00FF: Free space.
+SECTION "bank0", rom0[$68]
+
+; $0100 - $0103: Startup handler.
+SECTION "romheader", rom0[$100]
+nop
+jp main
+
+; $0104 - $0133: The Nintendo Logo.
+DB $CE, $ED, $66, $66, $CC, $0D, $00, $0B
+DB $03, $73, $00, $83, $00, $0C, $00, $0D
+DB $00, $08, $11, $1F, $88, $89, $00, $0E
+DB $DC, $CC, $6E, $E6, $DD, $DD, $D9, $99
+DB $BB, $BB, $67, $63, $6E, $0E, $EC, $CC
+DB $DD, $DC, $99, $9F, $BB, $B9, $33, $3E
+
+; $0134 - $013E: The title, in upper-case letters, followed by zeroes
+DB "TEST"
+
+DS 7; padding
+
+; $013F - $0142: The manufacturer code.
+DS 4
+
+; $0143: Gameboy Color compatibility flag.    
+DB BOOT_GBC_UNSUPPORTED
+
+; $0144 - $0145: "New" Licensee Code, a two character name.
+DB "MY"
+
+; $0146: Super Gameboy compatibility flag.
+DB BOOT_SGB_UNSUPPORTED
+
+; $0147: Cartridge type. Either no ROM or MBC5 is recommended.
+DB BOOT_CART_ROM
+
+; $0148: Rom size.
+DB BOOT_ROM_32K
+
+; $0149: Ram size.
+DB BOOT_RAM_NONE
+
+; $014A: Destination code.
+DB BOOT_DEST_INTERNATIONAL
+; $014B: Old licensee code.
+DB $33
+; $014C: ROM version number
+DB $00
+; $014D: Header checksum.
+; Assembler needs to patch this.
+DB $FF
+; $014E- $014F: Global checksum.
+; Assembler needs to patch this.
+DW $FACE

@@ -1,4 +1,9 @@
+bin
+obj
+*.gb
+*.sav
 *.obj
 *.map
 *.sym
-*.gb
+gfx/*.bin
+TODO

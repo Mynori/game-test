@@ -1,29 +1,62 @@
-COMPILE = rgbasm
-LINK = rgblink
-FIX = rgbfix
+# Build commands
+CC		= rgbasm
+LINK	= rgblink
+FIX		= rgbfix
 
-NAME = game.gb
+# Directories 
+OBJDIR		= obj
+BUILDDIR	= bin
+VPATH 		:= src
+GFXDIRSRC	= $(VPATH)/gfx/src
+GFXDIROBJ	= $(VPATH)/gfx/obj
 
-%.obj: %.z80
-	$(COMPILE) -o$@ $<
+# Name and sources of the projet
+NAME 	= game.gb
+SOURCES = main.z80
+GFXSRC	= $(GFXDIRSRC)/test.png
 
-SOURCES = src/game.z80
+# Graphical builder
+$(GFXDIROBJ)/%.bin: $(GFXDIRSRC)/%.png
+	mkdir -p $(GFXDIROBJ)
+	rgbgfx -o $@ $<
 
-OBJECTS = $(SOURCES:.z80=.obj)
+# Compiler 
+$(OBJDIR)/%.obj: %.z80
+	mkdir -p $(OBJDIR)
+	$(CC) -o$@ $<
 
-$(NAME): $(OBJECTS)
-	$(LINK) -o $(NAME) $(OBJECTS)
-	$(FIX) -p0 -v $(NAME)
+# Linkers
+$(OBJDIR)/%.map: $(OBJDIR)/%.obj
+	$(LINK) -m$@ $<
 
-all: $(NAME)
+$(OBJDIR)/%.sym: $(OBJDIR)/%.obj
+	$(LINK) -n$@ $<
+
+# Builder
+$(BUILDDIR)/%.gb: $(OBJDIR)/%.obj
+	mkdir -p $(BUILDDIR)
+	$(LINK) -o$(BUILDDIR)/$(NAME) $<
+	$(FIX) -p0 -v $(BUILDDIR)/$(NAME)
+
+# Object and binary files
+GFX		= $(GFXSRC:$(GFXDIRSRC)/%.png=$(GFXDIROBJ)/%.bin)
+OBJECTS	= $(SOURCES:%.z80=$(OBJDIR)/%.obj)
+MAPS	= $(OBJECTS:$(OBJDIR)/%.obj=$(OBJDIR)/%.map)
+SYMBOLS = $(OBJECTS:$(OBJDIR)/%.obj=$(OBJDIR)/%.sym)
+BINARY 	= $(OBJECTS:$(OBJDIR)/%.obj=$(BUILDDIR)/%.gb)
+
+# Rules
+all: $(GFX) $(OBJECTS) $(MAPS) $(SYMBOLS) $(BINARY)
+
+build: $(GFX) $(OBJECTS) $(BINARY)
 
 clean:
-	rm -rf *.obj *.sym *.map
+	rm -rf $(GFX) $(OBJECTS) $(MAPS) $(SYMBOLS) $(GFXDIROBJ) $(OBJDIR)
 
 fclean:	clean
-	rm -rf *.gb
+	rm -rf $(BINARY) $(BUILDDIR)
 
 re: fclean all
 
 test:
-	bgb $(NAME)
+	mgba -4 $(BUILDDIR)/$(NAME)
