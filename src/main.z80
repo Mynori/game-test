@@ -9,9 +9,9 @@ vblank:
     ; Jumping here clears vblank flag automatically
     push hl
     ld hl, GB_SCROLL_X
-    dec [hl]
+    ;dec [hl]
     ld hl, GB_SCROLL_Y
-    dec [hl]
+    ;dec [hl]
     pop hl
     reti
 
@@ -30,7 +30,7 @@ main:
     call DisableLCD
 
     ; Set palette
-    ld a, %11100011
+    ld a, %11100101
     ld [GB_PALETTE_BG], a
     ld [GB_PALETTE_OBJ1], a
     ld [GB_PALETTE_OBJ2], a
@@ -74,7 +74,7 @@ main:
     incbin "src/gfx/obj/test.bin"
 
 .testgfxmap:
-    DB $0,$1,$2,$3,$4,$5,$6,$7,$8,$9,$A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-    DB $B,$C,$D,$E,$F,$10,$11,$12,$13,$14,$15,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-    DB $16,$17,$18,$19,$1A,$1B,$1C,$1D,$1E,$1F,$20,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-    DB $21,$22,$23,$24,$25,$26,$27,$28,$29,$2A,$2B,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+    DB $0,$1,$2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+    DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+    DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+    DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
