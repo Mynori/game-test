@@ -71,7 +71,7 @@ main:
     jr .loop
 
 .testgfx:
-    incbin "src/gfx/obj/test.bin"
+    incbin "obj/gfx/test.bin"
 
 .testgfxmap:
     DB $0,$1,$2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF

@@ -7,8 +7,8 @@ FIX		= rgbfix
 OBJDIR		= obj
 BUILDDIR	= bin
 VPATH 		:= src
-GFXDIRSRC	= $(VPATH)/gfx/src
-GFXDIROBJ	= $(VPATH)/gfx/obj
+GFXDIRSRC	= gfx
+GFXDIROBJ	= $(OBJDIR)/gfx
 
 # Name and sources of the projet
 NAME 	= game.gb
